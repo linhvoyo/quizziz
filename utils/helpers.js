@@ -2,10 +2,12 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const APP_STORAGE_KEY = 'MobileFlashcards:app';
 
+export async function printStorage() {
+  console.log(JSON.parse(await getStorage()));
+}
+
 export async function getStorage() {
-  await AsyncStorage.getItem(APP_STORAGE_KEY)
-    .then((res) => console.log(res))
-    .catch((e) => console.log(e));
+  return AsyncStorage.getItem(APP_STORAGE_KEY);
 }
 
 export async function setItem(item) {
@@ -17,12 +19,17 @@ export async function clearStorage() {
 }
 
 export async function addDeck(name) {
+  const decks = JSON.parse(await getStorage());
   const deck = {
-    [name] : {
+    [name]: {
       title: name,
       questions: [],
     },
   };
+
+  if (typeof (decks) === 'object') {
+    return setItem({...decks, ...deck});
+  }
   return setItem(deck);
 }
 

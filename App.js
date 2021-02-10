@@ -1,21 +1,31 @@
 import * as React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
-import { getStorage, clearStorage } from './utils/helpers';
+import { printStorage, clearStorage } from './utils/helpers';
+
+import { NavigationContainer } from '@react-navigation/native';
+import { createStackNavigator } from '@react-navigation/stack';
 
 import DeckList from './components/DeckList';
+import AddDeck from './components/AddDeck';
 
 const getStore = async () => {
 
-  console.log(await getStorage());
+  console.log(await printStorage());
 };
+
+const Stack = createStackNavigator();
 
 export default function App() {
   return (
     <View style={styles.container}>
-      <Button onPress={getStorage} title="Print store" />
+      <Button onPress={printStorage} title="Print store" />
       <Button onPress={clearStorage} title="Clear Storage" />
-      <Text>Universal React with Expo</Text>
-      <DeckList></DeckList>
+      <NavigationContainer>
+        <Stack.Navigator>
+          <Stack.Screen name="Home" component={DeckList} />
+          <Stack.Screen name="Add" component={AddDeck} />
+        </Stack.Navigator>
+      </NavigationContainer>
     </View>
   );
 }
