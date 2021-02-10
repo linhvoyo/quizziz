@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { addDeck } from '../utils/helpers';
-
+import { connect } from 'react-redux';
+import { createEntry } from '../store/actions';
 
 class AddDeck extends React.Component {
   state = {
@@ -13,12 +13,13 @@ class AddDeck extends React.Component {
   }
 
   createDeckHandler = async (name) => {
-    await addDeck(name);
+    const { dispatch, navigation } = this.props;
+    dispatch(createEntry(name));
+    navigation.navigate('Home');
   };
 
   render() {
     const { textInput } = this.state;
-    console.log(this.state);
     return (
       <View style={styles.container}>
         <TextInput
@@ -45,4 +46,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddDeck;
+export default connect()(AddDeck);

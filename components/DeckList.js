@@ -1,25 +1,18 @@
 import React from 'react';
 import { View, Text, Button, FlatList } from 'react-native';
-import { getStorage } from '../utils/helpers';
+import { connect } from 'react-redux';
+
+import { fetchEntries } from '../store/actions';
+
 
 class DeckList extends React.Component {
-  state = {
-    decks: [],
-  }
-
   componentDidMount() {
-    getStorage().then((res) => {
-      const decks = JSON.parse(res);
-      console.log(decks);
-      this.setState({ decks: Object.keys(decks).map((deck) => decks[deck]) });
-    });
+    const { dispatch } = this.props;
+    dispatch(fetchEntries());
   }
 
   render() {
-    console.log('DeckList.js')
-    console.log(this.state);
-    console.log(this.props);
-    const { decks } = this.state;
+    const { decks } = this.props;
     return (
       <View>
         <Text>Deck List</Text>
@@ -37,5 +30,11 @@ class DeckList extends React.Component {
   }
 }
 
-export default DeckList;
+const mapStateToProps = (state) => {
+  return {
+    decks: Object.keys(state).map((deck) => state[deck]),
+  };
+};
+
+export default connect(mapStateToProps)(DeckList);
 

@@ -27,9 +27,8 @@ export async function addDeck(name) {
     },
   };
 
-  if (typeof (decks) === 'object') {
-    return setItem({...decks, ...deck});
-  }
-  return setItem(deck);
+  if (typeof (decks) === 'object') { await setItem({ ...decks, ...deck }); }
+  else { await setItem(deck); }
+  return deck;
 }
 

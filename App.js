@@ -1,5 +1,11 @@
 import * as React from 'react';
 import { View, Text, Button, StyleSheet } from 'react-native';
+import { createStore, compose } from 'redux';
+import { Provider } from 'react-redux';
+
+import reducer from './store/reducers';
+import middleware from './store/middleware';
+
 import { printStorage, clearStorage } from './utils/helpers';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -8,26 +14,29 @@ import { createStackNavigator } from '@react-navigation/stack';
 import DeckList from './components/DeckList';
 import AddDeck from './components/AddDeck';
 
-const getStore = async () => {
 
-  console.log(await printStorage());
-};
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
+const store = createStore(reducer, composeEnhancers(middleware));
 
 const Stack = createStackNavigator();
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <Button onPress={printStorage} title="Print store" />
-      <Button onPress={clearStorage} title="Clear Storage" />
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen name="Home" component={DeckList} />
-          <Stack.Screen name="Add" component={AddDeck} />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </View>
-  );
+class App extends React.Component {
+  render() {
+    return (
+      <Provider store={store}>
+        <View style={styles.container}>
+          <Button onPress={printStorage} title="Print store" />
+          <Button onPress={clearStorage} title="Clear Storage" />
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen name="Home" component={DeckList} />
+              <Stack.Screen name="Add" component={AddDeck} />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </View>
+      </Provider>
+    );
+  }
 }
 
 const styles = StyleSheet.create({
@@ -39,3 +48,5 @@ const styles = StyleSheet.create({
     justifyContent: 'flex-start',
   },
 });
+
+export default App;
