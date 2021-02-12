@@ -1,7 +1,8 @@
 import React from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, TextInput, Button, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import { createEntry } from '../store/actions';
+import PropTypes from 'prop-types';
 
 class AddDeck extends React.Component {
   state = {
@@ -45,5 +46,10 @@ const styles = StyleSheet.create({
     borderWidth: 1,
   },
 });
+
+AddDeck.propTypes = {
+  dispatch: PropTypes.func.isRequired,
+  navigation: PropTypes.object.isRequired,
+};
 
 export default connect()(AddDeck);

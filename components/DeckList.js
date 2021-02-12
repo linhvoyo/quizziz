@@ -1,6 +1,9 @@
 import React from 'react';
 import { View, Text, Button, FlatList } from 'react-native';
 import { connect } from 'react-redux';
+import PropTypes from 'prop-types';
+
+import DeckCard from './DeckCard';
 
 import { fetchEntries } from '../store/actions';
 
@@ -11,6 +14,11 @@ class DeckList extends React.Component {
     dispatch(fetchEntries());
   }
 
+  navigateToDeckHandler = (deck) => {
+    const { navigation } = this.props;
+    navigation.navigate('Deck', {...deck});
+  };
+
   render() {
     const { decks } = this.props;
     return (
@@ -18,7 +26,7 @@ class DeckList extends React.Component {
         <Text>Deck List</Text>
         <FlatList
           data={decks}
-          renderItem={(item) => <Text>{JSON.stringify(item)}</Text>}
+          renderItem={(item) => <DeckCard item={item} onDeckClick={this.navigateToDeckHandler}/>}
           keyExtractor={item => item.title}
         />
         <Button
@@ -34,6 +42,12 @@ const mapStateToProps = (state) => {
   return {
     decks: Object.keys(state).map((deck) => state[deck]),
   };
+};
+
+DeckList.propTypes = {
+  decks: PropTypes.object.isRequired,
+  dispatch: PropTypes.func.isRequired,
+  navigation: PropTypes.func.isRequired,
 };
 
 export default connect(mapStateToProps)(DeckList);

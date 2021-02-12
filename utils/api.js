@@ -32,3 +32,23 @@ export async function addDeck(name) {
   return deck;
 }
 
+export async function addQuestion(deck, question, answer) {
+  const card = {
+    question,
+    answer,
+  };
+
+  const decks = JSON.parse(await getStorage());
+  console.log(deck);
+  console.log(decks);
+  if (deck in decks) {
+    return setItem({
+      ...decks,
+      [deck]: {
+        ...decks[deck],
+        questions: decks[deck].questions.concat(card),
+      },
+    });
+  }
+  throw new Error('Unable to add card to deck');
+}
