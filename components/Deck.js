@@ -25,9 +25,9 @@ class Deck extends React.Component {
   }
 }
 
-const mapStateToProps = (state, props) => {
+const mapStateToProps = ({decks}, props) => {
   const { navigation, route: { params } } = props;
-  const { questions } = state[params.title];
+  const { questions } = decks[params.title];
   return {
     navigation,
     params,

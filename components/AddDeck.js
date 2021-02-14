@@ -1,7 +1,7 @@
 import React from 'react';
 import { View, TextInput, Button, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
-import { createEntry } from '../store/actions';
+import { createDeck } from '../store/actions';
 import PropTypes from 'prop-types';
 
 class AddDeck extends React.Component {
@@ -15,7 +15,7 @@ class AddDeck extends React.Component {
 
   createDeckHandler = async (name) => {
     const { dispatch, navigation } = this.props;
-    dispatch(createEntry(name));
+    dispatch(createDeck(name));
     navigation.navigate('Home');
   };
 

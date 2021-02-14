@@ -5,18 +5,18 @@ import PropTypes from 'prop-types';
 
 import DeckCard from './DeckCard';
 
-import { fetchEntries } from '../store/actions';
+import { fetchDecks } from '../store/actions';
 
 
 class DeckList extends React.Component {
   componentDidMount() {
     const { dispatch } = this.props;
-    dispatch(fetchEntries());
+    dispatch(fetchDecks());
   }
 
   navigateToDeckHandler = (deck) => {
     const { navigation } = this.props;
-    navigation.navigate('Deck', {...deck});
+    navigation.navigate('Deck', { ...deck });
   };
 
   render() {
@@ -38,14 +38,14 @@ class DeckList extends React.Component {
   }
 }
 
-const mapStateToProps = (state) => {
+const mapStateToProps = ({ decks }) => {
   return {
-    decks: Object.keys(state).map((deck) => state[deck]),
+    decks: Object.keys(decks).map((deck) => decks[deck]) || [],
   };
 };
 
 DeckList.propTypes = {
-  decks: PropTypes.object.isRequired,
+  decks: PropTypes.array.isRequired,
   dispatch: PropTypes.func.isRequired,
   navigation: PropTypes.func.isRequired,
 };

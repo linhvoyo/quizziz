@@ -1,34 +1,35 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const APP_STORAGE_KEY = 'MobileFlashcards:app';
+const DECKS_STORAGE_KEY = 'MobileFlashcards:decks';
 
 export async function printStorage() {
-  console.log(JSON.parse(await getStorage()));
-}
-
-export async function getStorage() {
-  return AsyncStorage.getItem(APP_STORAGE_KEY);
-}
-
-export async function setItem(item) {
-  return AsyncStorage.setItem(APP_STORAGE_KEY, JSON.stringify(item));
+  console.log('decks', JSON.parse(await getDecksFromStorage()));
 }
 
 export async function clearStorage() {
-  return AsyncStorage.removeItem(APP_STORAGE_KEY);
+  return AsyncStorage.removeItem(DECKS_STORAGE_KEY);
 }
 
-export async function addDeck(name) {
-  const decks = JSON.parse(await getStorage());
+export async function setDecksItem(item) {
+  return AsyncStorage.setItem(DECKS_STORAGE_KEY, JSON.stringify(item));
+}
+
+export async function getDecksFromStorage() {
+  return AsyncStorage.getItem(DECKS_STORAGE_KEY);
+}
+
+export async function addDeckToStorgage(name) {
+  const decks = JSON.parse(await getDecksFromStorage());
   const deck = {
     [name]: {
       title: name,
       questions: [],
+      quizes: [],
     },
   };
 
-  if (typeof (decks) === 'object') { await setItem({ ...decks, ...deck }); }
-  else { await setItem(deck); }
+  if (typeof (decks) === 'object') { await setDecksItem({ ...decks, ...deck }); }
+  else { await setDecksItem(deck); }
   return deck;
 }
 
@@ -38,11 +39,11 @@ export async function addQuestion(deck, question, answer) {
     answer,
   };
 
-  const decks = JSON.parse(await getStorage());
+  const decks = JSON.parse(await getDecksFromStorage());
   console.log(deck);
   console.log(decks);
   if (deck in decks) {
-    return setItem({
+    return setDecksItem({
       ...decks,
       [deck]: {
         ...decks[deck],
