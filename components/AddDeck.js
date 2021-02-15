@@ -1,40 +1,33 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
-import { connect } from 'react-redux';
-import { createDeck } from '../store/actions';
 import PropTypes from 'prop-types';
 
-class AddDeck extends React.Component {
-  state = {
-    textInput: '',
-  }
+import { createDeck } from '../store/actions';
 
-  textInputHandler = (textInput) => {
-    this.setState({ textInput });
-  }
+export default function AddDeck(props) {
+  const [textInput, setTextInput] = useState('');
 
-  createDeckHandler = async (name) => {
-    const { dispatch, navigation } = this.props;
-    dispatch(createDeck(name));
+  const textInputHandler = (value) => { setTextInput(value); };
+
+  const createDeckHandler = () => {
+    const { store, navigation } = props;
+    store.dispatch(createDeck(textInput));
     navigation.navigate('Home');
   };
 
-  render() {
-    const { textInput } = this.state;
-    return (
-      <View style={styles.container}>
-        <Text style={styles.text}>What is the title of your new deck?</Text>
-        <TextInput
-          style={styles.textInput}
-          placeholder="Enter deck name"
-          onChangeText={this.textInputHandler}
-          value={textInput}
-          blurOnSubmit={true}
-        />
-        <Button title="Create deck" onPress={() => this.createDeckHandler(textInput)} />
-      </View>
-    );
-  }
+  return (
+    <View style={styles.container}>
+      <Text style={styles.text}>What is the title of your new deck?</Text>
+      <TextInput
+        style={styles.textInput}
+        placeholder="Enter deck name"
+        onChangeText={(text) => textInputHandler(text)}
+        value={textInput}
+        blurOnSubmit={true}
+      />
+      <Button title="Create deck" onPress={createDeckHandler} />
+    </View>
+  );
 }
 
 const styles = StyleSheet.create({
@@ -58,8 +51,6 @@ const styles = StyleSheet.create({
 });
 
 AddDeck.propTypes = {
-  dispatch: PropTypes.func.isRequired,
   navigation: PropTypes.object.isRequired,
+  store: PropTypes.object.isRequired,
 };
-
-export default connect()(AddDeck);

@@ -32,7 +32,7 @@ class App extends React.Component {
           <NavigationContainer>
             <Stack.Navigator>
               <Stack.Screen name="Home" component={DeckList} />
-              <Stack.Screen name="Add" component={AddDeck} />
+              <Stack.Screen name="Add">{(props) => <AddDeck {...props} store={store} />}</Stack.Screen>
               <Stack.Screen name="Deck" component={Deck} options={({ route }) => ({ title: route.params.title })} />
               <Stack.Screen name="AddCard" component={AddCard} />
               <Stack.Screen name="Quiz" component={Quiz} />
