@@ -9,7 +9,7 @@ const DeckCard = (props) => {
   return (
     <TouchableOpacity onPress={() => onDeckClick(deck)}>
       <View style={styles.container}>
-        <Text>{deck.title}</Text>
+        <Text style={styles.title}>{deck.title}</Text>
         <Text>{`${deck.questions.length} cards`}</Text>
       </View>
     </TouchableOpacity>
@@ -18,10 +18,21 @@ const DeckCard = (props) => {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 1,
-    borderColor: 'red',
-    borderWidth: 1,
-    alignItems: 'center',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    borderRadius: 10,
+    padding: 30,
+    backgroundColor: 'white',
+    marginLeft: 10,
+    marginRight: 10,
+    marginBottom: 20,
+    shadowOffset: {
+      height: 3,
+    },
+    shadowOpacity: 0.2,
+  },
+  title: {
+    fontSize: 25,
   },
 });
 

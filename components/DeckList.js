@@ -1,5 +1,5 @@
 import React from 'react';
-import { View, Text, Button, FlatList } from 'react-native';
+import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -22,11 +22,11 @@ class DeckList extends React.Component {
   render() {
     const { decks, navigation } = this.props;
     return (
-      <View>
-        <Text>Deck List</Text>
+      <View style={styles.container}>
+        <Text style={styles.deckTitle}>Flashcards</Text>
         <FlatList
           data={decks}
-          renderItem={(item) => <DeckCard item={item} onDeckClick={this.navigateToDeckHandler}/>}
+          renderItem={(item) => <DeckCard item={item} onDeckClick={this.navigateToDeckHandler} />}
           keyExtractor={item => item.title}
         />
         <Button
@@ -37,6 +37,19 @@ class DeckList extends React.Component {
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+  },
+  deckTitle: {
+    textAlign: 'center',
+    fontSize: 20,
+    fontWeight: 'bold',
+    marginBottom: 20,
+    marginTop: 20,
+  },
+});
 
 const mapStateToProps = ({ decks }) => {
   return {
