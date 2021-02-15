@@ -40,8 +40,6 @@ export async function addQuestion(deck, question, answer) {
   };
 
   const decks = JSON.parse(await getDecksFromStorage());
-  console.log(deck);
-  console.log(decks);
   if (deck in decks) {
     return setDecksItem({
       ...decks,
@@ -53,3 +51,8 @@ export async function addQuestion(deck, question, answer) {
   }
   throw new Error('Unable to add card to deck');
 }
+
+export async function updateDecks(decks) {
+  await AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify(decks));
+}
+

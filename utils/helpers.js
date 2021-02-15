@@ -1,3 +1,3 @@
 import uuid from 'react-native-uuid';
 
-export default function generateUUID() { return uuid(); }
+export function generateUUID() { return uuid(); }

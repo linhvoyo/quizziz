@@ -15,7 +15,7 @@ import DeckList from './components/DeckList';
 import AddDeck from './components/AddDeck';
 import Deck from './components/Deck';
 import AddCard from './components/AddCard';
-
+import Quiz from './components/Quiz';
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(reducer, composeEnhancers(middleware));
@@ -35,6 +35,7 @@ class App extends React.Component {
               <Stack.Screen name="Add" component={AddDeck} />
               <Stack.Screen name="Deck" component={Deck} options={({ route }) => ({ title: route.params.title })} />
               <Stack.Screen name="AddCard" component={AddCard} />
+              <Stack.Screen name="Quiz" component={Quiz} />
             </Stack.Navigator>
           </NavigationContainer>
         </View>

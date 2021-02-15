@@ -3,12 +3,13 @@ import { View, Text, Button } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+import {createQuiz } from '../store/actions';
+
 class Deck extends React.Component {
-  state = {
-    mode: '',
-    order: '',
-    current: '',
-    correct: '',
+  startQuizHandler = async () => {
+    const { onCreateQuiz, params: { title } } = this.props;
+    const quizId = await onCreateQuiz(title);
+    console.log('quizId', quizId);
   };
 
   render() {
@@ -19,13 +20,13 @@ class Deck extends React.Component {
         <Text>{params.title}</Text>
         <Text>{`${questions.length} cards`}</Text>
         <Button title="Add Card" onPress={() => navigation.navigate('AddCard', { ...params })} />
-        <Button title="Start Quiz" />
+        <Button title="Start Quiz" onPress={this.startQuizHandler} />
       </View>
     );
   }
 }
 
-const mapStateToProps = ({decks}, props) => {
+const mapStateToProps = ({ decks }, props) => {
   const { navigation, route: { params } } = props;
   const { questions } = decks[params.title];
   return {
@@ -35,10 +36,15 @@ const mapStateToProps = ({decks}, props) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => ({
+  onCreateQuiz: (title) => { return dispatch(createQuiz(title)); },
+});
+
 Deck.propTypes = {
   params: PropTypes.object.isRequired,
   questions: PropTypes.array.isRequired,
   navigation: PropTypes.object.isRequired,
+  onCreateQuiz: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(Deck);
+export default connect(mapStateToProps, mapDispatchToProps)(Deck);
