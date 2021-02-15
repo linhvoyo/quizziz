@@ -23,7 +23,7 @@ const addCard = (deck, question) => ({
   question,
 });
 
-const addQuizToDeck = (deck, quiz) => ({
+const addQuiz = (deck, quiz) => ({
   type: ADD_QUIZ_TO_DECK,
   deck,
   quiz,
@@ -49,10 +49,10 @@ export const createCard = (deck, question, answer) => {
   };
 };
 
-export const createQuiz = (deck) => {
+export const addQuizToDeck = (deck) => {
   const uuid = generateUUID();
   return async (dispatch, getState) => {
-    dispatch(addQuizToDeck(deck, uuid));
+    dispatch(addQuiz(deck, uuid));
     return updateDecks(getState().decks)
       .then(() => uuid);
   };

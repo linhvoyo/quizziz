@@ -1,13 +1,15 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const DECKS_STORAGE_KEY = 'MobileFlashcards:decks';
+const QUIZZES_STORAGE_KEY = 'MobileFlashcards:quizzes';
 
 export async function printStorage() {
   console.log('decks', JSON.parse(await getDecksFromStorage()));
+  console.log('quizzes', JSON.parse(await getQuizzesFromStorage()));
 }
 
 export async function clearStorage() {
-  return AsyncStorage.removeItem(DECKS_STORAGE_KEY);
+  return AsyncStorage.removeItem(DECKS_STORAGE_KEY) && AsyncStorage.removeItem(QUIZZES_STORAGE_KEY);
 }
 
 export async function setDecksItem(item) {
@@ -16,6 +18,10 @@ export async function setDecksItem(item) {
 
 export async function getDecksFromStorage() {
   return AsyncStorage.getItem(DECKS_STORAGE_KEY);
+}
+
+export async function getQuizzesFromStorage() {
+  return AsyncStorage.getItem(QUIZZES_STORAGE_KEY);
 }
 
 export async function addDeckToStorgage(name) {
@@ -56,3 +62,7 @@ export async function updateDecks(decks) {
   await AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify(decks));
 }
 
+export async function updateQuizzes(quizzes) {
+  if (!JSON.parse(await getQuizzesFromStorage())) await AsyncStorage.setItem(QUIZZES_STORAGE_KEY, JSON.stringify({}));
+  await AsyncStorage.mergeItem(QUIZZES_STORAGE_KEY, JSON.stringify(quizzes));
+}

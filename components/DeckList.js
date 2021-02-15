@@ -20,7 +20,7 @@ class DeckList extends React.Component {
   };
 
   render() {
-    const { decks } = this.props;
+    const { decks, navigation } = this.props;
     return (
       <View>
         <Text>Deck List</Text>
@@ -31,7 +31,7 @@ class DeckList extends React.Component {
         />
         <Button
           title="Add Deck"
-          onPress={() => this.props.navigation.navigate('Add')}
+          onPress={() => navigation.navigate('Add')}
         />
       </View>
     );
@@ -47,7 +47,7 @@ const mapStateToProps = ({ decks }) => {
 DeckList.propTypes = {
   decks: PropTypes.array.isRequired,
   dispatch: PropTypes.func.isRequired,
-  navigation: PropTypes.func.isRequired,
+  navigation: PropTypes.object.isRequired,
 };
 
 export default connect(mapStateToProps)(DeckList);
