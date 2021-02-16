@@ -1,7 +1,9 @@
 import React from 'react';
-import { View, Text, Button, FlatList, StyleSheet } from 'react-native';
+import { View, Text, FlatList, StyleSheet } from 'react-native';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import DeckCard from './DeckCard';
 
@@ -20,19 +22,27 @@ class DeckList extends React.Component {
   };
 
   render() {
-    const { decks, navigation } = this.props;
+    const { decks } = this.props;
+
+    const addIcon =  <MaterialCommunityIcons name="card-plus-outline" size={24} color="black" />;
     return (
       <View style={styles.container}>
-        <Text style={styles.deckTitle}>Flashcards</Text>
-        <FlatList
+        {decks.length ? <FlatList
           data={decks}
           renderItem={(item) => <DeckCard item={item} onDeckClick={this.navigateToDeckHandler} />}
           keyExtractor={item => item.title}
         />
-        <Button
-          title="Add Deck"
-          onPress={() => navigation.navigate('Add')}
-        />
+          : (
+            <View style={styles.container}>
+              <Text style={styles.welcomeText}>Welcome to Quizziz!</Text>
+              <View style={styles.deckEmpty}>
+                <Text style={styles.deckEmptyText}>No deck found in list.</Text>
+                <Text style={styles.deckEmptyText}>
+                  Navigate to "{addIcon} Add" to create deck</Text>
+              </View>
+            </View>
+          )
+        }
       </View>
     );
   }
@@ -41,13 +51,23 @@ class DeckList extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    padding: 10,
+    backgroundColor: '#f0f1fa',
   },
-  deckTitle: {
-    textAlign: 'center',
-    fontSize: 20,
+  deckEmpty: {
+    flex: 1,
+    alignItems: 'center',
+  },
+  welcomeText: {
+    fontSize: 30,
     fontWeight: 'bold',
-    marginBottom: 20,
-    marginTop: 20,
+    textAlign: 'center',
+    margin: 20,
+  },
+  deckEmptyText: {
+    fontSize: 20,
+    textAlign: 'center',
+    margin: 10,
   },
 });
 

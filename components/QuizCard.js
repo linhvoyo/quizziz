@@ -52,7 +52,7 @@ export function QuizSummary(props) {
       <Card.Title>Summary</Card.Title>
       <Text style={styles.text}>{JSON.stringify(stats)}</Text>
     </Card>
-  )
+  );
 }
 
 const styles = StyleSheet.create({

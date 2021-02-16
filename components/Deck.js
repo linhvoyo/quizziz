@@ -1,13 +1,16 @@
 import React from 'react';
-import { View, Text, Button } from 'react-native';
+import { View, Text, Image } from 'react-native';
+import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
+
 import { addQuizToDeck, addQuizToQuizes } from '../store/actions';
+
 
 class Deck extends React.Component {
   startQuizHandler = async () => {
-    const {onCreateQuiz, onAddQuizToQuizes, questions, params: { title }, navigation } = this.props;
+    const { onCreateQuiz, onAddQuizToQuizes, questions, params: { title }, navigation } = this.props;
     onCreateQuiz(title).then((quizId) => {
       onAddQuizToQuizes(quizId, title, questions).then((quiz) => {
         navigation.navigate('Quiz', { ...quiz });
@@ -18,16 +21,51 @@ class Deck extends React.Component {
   render() {
     const { params, questions, navigation } = this.props;
     return (
-      <View>
-        <Text>Deck</Text>
-        <Text>{params.title}</Text>
-        <Text>{`${questions.length} cards`}</Text>
-        <Button title="Add Card" onPress={() => navigation.navigate('AddCard', { ...params })} />
-        <Button title="Start Quiz" onPress={this.startQuizHandler} />
+      <View style={styles.container}>
+        <View style={styles.imageContainer}>
+          <Image style={styles.image} source={require('../assets/undraw_Taking_notes_re_bnaf.png')} />
+        </View>
+        <Text style={styles.title}>{params.title}</Text>
+        <Text style={styles.cardCount}>{`${questions.length} cards`}</Text>
+        <Button containerStyle={styles.button} title="Add Card" type="outline" onPress={() => navigation.navigate('AddCard', { ...params })} />
+        <Button containerStyle={styles.button} title="Start Quiz" disabled={!questions.length} onPress={this.startQuizHandler} />
       </View>
     );
   }
 }
+
+const styles = {
+  container: {
+    flex: 1,
+    backgroundColor: 'white',
+  },
+  imageContainer: {
+    alignItems: 'center',
+    margin: 40,
+  },
+  image: {
+    width: 300,
+    height: 200,
+    resizeMode: 'cover',
+  },
+  title: {
+    fontSize: 30,
+    fontWeight: 'bold',
+    textAlign: 'center',
+    margin: 10,
+  },
+  cardCount: {
+    textAlign: 'center',
+    fontSize: 20,
+    margin: 20,
+  },
+  button: {
+    width: 200,
+    alignSelf: 'center',
+    margin: 5,
+  },
+};
+
 
 const mapStateToProps = ({ decks }, props) => {
   const { navigation, route: { params } } = props;

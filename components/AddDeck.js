@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, Button, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
 import { createDeck } from '../store/actions';
@@ -12,7 +13,8 @@ export default function AddDeck(props) {
   const createDeckHandler = () => {
     const { store, navigation } = props;
     store.dispatch(createDeck(textInput));
-    navigation.navigate('Home');
+    setTextInput('');
+    navigation.navigate('Flashcards');
   };
 
   return (
@@ -32,7 +34,9 @@ export default function AddDeck(props) {
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
     padding: 20,
+    backgroundColor: 'white',
   },
   text: {
     textAlign: 'center',
