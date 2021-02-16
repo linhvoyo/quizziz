@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet, Button } from 'react-native';
+import { View, TextInput, StyleSheet } from 'react-native';
+import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
@@ -35,20 +36,29 @@ function AddCard(props) {
         placeholder="Answer"
         value={state.answer}
         onChangeText={answerInputHandler} />
-      <Button title="Add Card" onPress={async () => addCardHandler(title, state.question, state.answer)} />
+      <Button containerStyle={styles.button} title="Add Card" onPress={async () => addCardHandler(title, state.question, state.answer)} />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    margin: 20,
+    flex: 1,
+    padding: 20,
+    backgroundColor: 'white',
+    paddingTop: 40,
   },
   textInput: {
-    height: 40,
+    marginBottom: 10,
+    height: 50,
     textAlign: 'center',
     borderColor: 'gray',
     borderWidth: 1,
+    borderRadius: 10,
+  },
+  button: {
+    marginTop: 10,
+    borderRadius: 10,
   },
 });
 
