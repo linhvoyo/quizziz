@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
   title: {
     fontSize: 25,
     fontWeight: 'bold',
+    maxWidth: '65%',
   },
   deckDetails: {
     flexDirection: 'row',

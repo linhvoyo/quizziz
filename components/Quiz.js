@@ -1,10 +1,10 @@
 import React from 'react';
 import { Animated, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
 import { Button } from 'react-native-elements';
-import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 
-import QuizCard, { QuizSummary } from './QuizCard';
+import QuizCard from './QuizCard';
+import QuizSummary from './QuizSummary';
 
 class Quiz extends React.Component {
   state = {
@@ -77,7 +77,8 @@ class Quiz extends React.Component {
 
     const stats = answers.length ? this.getStatus(answers) : null;
 
-    if (answers.length && !stats.unanswered) return <QuizSummary stats={stats} />;
+    if (answers.length && !stats.unanswered)
+      return <QuizSummary stats={stats} questions={questions} answers={answers}/>;
 
     return (
       <View style={styles.container}>
@@ -132,12 +133,12 @@ const styles = StyleSheet.create({
 
 Quiz.propTypes = {
   route: PropTypes.shape({
-    params: {
+    params: PropTypes.shape({
       questions: PropTypes.array.isRequired,
       answers: PropTypes.array.isRequired,
-    },
+    }),
   }),
 };
 
-export default connect()(Quiz);
+export default Quiz;
 

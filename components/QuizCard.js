@@ -45,16 +45,6 @@ export default function QuizCard(props) {
   );
 }
 
-export function QuizSummary(props) {
-  const { stats } = props;
-  return (
-    <Card containerStyle={styles.card}>
-      <Card.Title>Summary</Card.Title>
-      <Text style={styles.text}>{JSON.stringify(stats)}</Text>
-    </Card>
-  );
-}
-
 const styles = StyleSheet.create({
   card: {
     borderRadius: 10,
@@ -94,10 +84,3 @@ QuizCard.propTypes = {
   onAnswered: PropTypes.func,
   answer: PropTypes.bool,
 };
-
-QuizSummary.propTypes = {
-  stats: PropTypes.shape({
-    correct: PropTypes.number.isRequired,
-    incorrect: PropTypes.number.isRequired,
-  }),
-}
