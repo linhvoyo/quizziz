@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, Text, TextInput, StyleSheet } from 'react-native';
+import { View, Text, TextInput, StyleSheet, Alert } from 'react-native';
 import { Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
@@ -10,8 +10,21 @@ export default function AddDeck(props) {
 
   const textInputHandler = (value) => { setTextInput(value); };
 
+  const getDecks = () => {
+    const { decks } = props.store.getState();
+    return Object.keys(decks);
+  };
+
+  const isError = (value) => {
+    if (!value) return 'String is empty';
+    if (getDecks().includes(value)) return 'Name already exists';
+    return false;
+  };
+
   const createDeckHandler = () => {
     const { store, navigation } = props;
+    const error = isError(textInput);
+    if (error) return Alert.alert('Unable to create deck', error);
     store.dispatch(createDeck(textInput));
     setTextInput('');
     navigation.navigate('Flashcards');

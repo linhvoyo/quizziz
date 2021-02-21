@@ -1,12 +1,14 @@
 import React from 'react';
 import { View, Text, StyleSheet, TouchableOpacity } from 'react-native';
+import { Button } from 'react-native-elements';
 import PropTypes from 'prop-types';
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 const DeckCard = (props) => {
   const deck = props.item.item;
-  const { onDeckClick } = props;
+  const { onDeckClick, remove } = props;
 
   return (
     <TouchableOpacity onPress={() => onDeckClick(deck)}>
@@ -16,6 +18,11 @@ const DeckCard = (props) => {
           <MaterialCommunityIcons name="cards-outline" size={25} color="black" />
           <Text style={styles.deckDetailsText}> {`${deck.questions.length} cards`}</Text>
         </View>
+        <Button
+          containerStyle={styles.delete}
+          type="clear"
+          icon={<AntDesign name="delete" size={15} color="red"/>}
+          onPress={() => remove(deck.title)}/>
       </View>
     </TouchableOpacity>
   );
@@ -26,7 +33,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderRadius: 10,
-    padding: 20,
+    padding: 25,
     backgroundColor: 'white',
     marginLeft: 10,
     marginRight: 10,
@@ -48,11 +55,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
     marginLeft: 5,
   },
+  delete: {
+    position: 'absolute',
+  },
 });
 
 DeckCard.propTypes = {
   item: PropTypes.object.isRequired,
   onDeckClick: PropTypes.func.isRequired,
+  remove: PropTypes.func.isRequired,
 };
 
 export default DeckCard;

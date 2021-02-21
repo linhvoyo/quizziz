@@ -3,8 +3,9 @@ import {
   GET_DECKS,
   ADD_CARD,
   ADD_QUIZ_TO_DECK,
+  REMOVE_DECK,
 } from './actionTypes';
-import { getDecksFromStorage, addDeckToStorgage, addQuestion, updateDecks } from '../../utils/api';
+import { getDecksFromStorage, addDeckToStorgage, addQuestion, updateDecks, removeDeckFromStorage } from '../../utils/api';
 import { generateUUID } from '../../utils/helpers';
 
 const addDeck = (deck) => ({
@@ -29,6 +30,11 @@ const addQuiz = (deck, quiz) => ({
   quiz,
 });
 
+const removeDeck = (name) => ({
+  type: REMOVE_DECK,
+  name,
+});
+
 export const fetchDecks = () => {
   return async (dispatch) => {
     const entries = await getDecksFromStorage();
@@ -46,6 +52,13 @@ export const createCard = (deck, question, answer) => {
   return async dispatch => {
     return addQuestion(deck, question, answer)
       .then(() => dispatch(addCard(deck, { question, answer })));
+  };
+};
+
+export const removeDeckFromList = (name) => {
+  return async dispatch => {
+    return removeDeckFromStorage(name)
+      .then(() => dispatch(removeDeck(name)));
   };
 };
 

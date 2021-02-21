@@ -7,13 +7,13 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import DeckCard from './DeckCard';
 
-import { fetchDecks } from '../store/actions';
+import { fetchDecks, removeDeckFromList } from '../store/actions';
 
 
 class DeckList extends React.Component {
   componentDidMount() {
-    const { dispatch } = this.props;
-    dispatch(fetchDecks());
+    const { getDecks } = this.props;
+    getDecks();
   }
 
   navigateToDeckHandler = (deck) => {
@@ -22,15 +22,14 @@ class DeckList extends React.Component {
   };
 
   render() {
-    const { decks } = this.props;
-
+    const { decks, removeDeck } = this.props;
     const addIcon = <MaterialCommunityIcons name="card-plus-outline" size={24} color="black" />;
     return (
       decks.length ? (
         <View style={styles.container}>
           <FlatList
             data={decks}
-            renderItem={(item) => <DeckCard item={item} onDeckClick={this.navigateToDeckHandler} />}
+            renderItem={(item) => <DeckCard item={item} onDeckClick={this.navigateToDeckHandler} remove={removeDeck}/>}
             keyExtractor={item => item.title}
           />
         </View>
@@ -90,11 +89,20 @@ const mapStateToProps = ({ decks }) => {
   };
 };
 
+const mapDispatchToProps = (dispatch) => {
+  return {
+    getDecks: () => dispatch(fetchDecks()),
+    removeDeck: (name) => dispatch(removeDeckFromList(name)),
+  };
+};
+
 DeckList.propTypes = {
   decks: PropTypes.array.isRequired,
   dispatch: PropTypes.func.isRequired,
   navigation: PropTypes.object.isRequired,
+  getDecks: PropTypes.func.isRequired,
+  removeDeck: PropTypes.func.isRequired,
 };
 
-export default connect(mapStateToProps)(DeckList);
+export default connect(mapStateToProps, mapDispatchToProps)(DeckList);
 

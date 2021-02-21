@@ -3,6 +3,7 @@ import {
   GET_DECKS,
   ADD_CARD,
   ADD_QUIZ_TO_DECK,
+  REMOVE_DECK,
 } from '../actions/actionTypes';
 
 export default function entries(state = {}, action) {
@@ -23,6 +24,11 @@ export default function entries(state = {}, action) {
         quizes: state[action.deck].quizes.concat(action.quiz),
       },
     };
+    case REMOVE_DECK: {
+      const decks = {...state};
+      delete decks[action.name];
+      return {...decks};
+    }
   default: return state;
   }
 }

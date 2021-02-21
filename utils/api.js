@@ -58,6 +58,12 @@ export async function addQuestion(deck, question, answer) {
   throw new Error('Unable to add card to deck');
 }
 
+export async function removeDeckFromStorage(name) {
+  const decks = JSON.parse(await getDecksFromStorage());
+  delete decks[name];
+  await setDecksItem(decks);
+}
+
 export async function updateDecks(decks) {
   await AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify(decks));
 }
