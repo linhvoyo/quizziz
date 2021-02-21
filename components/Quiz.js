@@ -1,9 +1,8 @@
 import React from 'react';
-import { Animated, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import { Button } from 'react-native-elements';
+import { Animated, View, StyleSheet } from 'react-native';
 import PropTypes from 'prop-types';
 
-import QuizCard from './QuizCard';
+import { FrontCard, BackCard } from './QuizCard';
 import QuizSummary from './QuizSummary';
 
 class Quiz extends React.Component {
@@ -35,16 +34,9 @@ class Quiz extends React.Component {
     );
   }
 
-  getStatus = (answers) => {
-    return {
-      correct: answers.reduce((a, c) => c ? a + 1 : a, 0),
-      incorrect: answers.reduce((a, c) => c === false ? a + 1 : a, 0),
-      unanswered: answers.reduce((a, c) => c === null ? a + 1 : a, 0),
-    };
-  }
-
   nextQuestionHandler = () => {
-    return this.setState((prev) => ({ current: Math.min(prev.current + 1, prev.questions.length - 1) }));
+    this.flipHandler();
+    this.setState((prev) => ({ current: prev.current + 1 }));
   };
 
   prevQuestionHandler = () => {
@@ -54,15 +46,17 @@ class Quiz extends React.Component {
   answerQuestionHandler = (idx, correct) => {
     const answers = [...this.state.answers];
     answers[idx] = correct;
-    this.setState(({ answers }),
-      this.setState((prev) => ({ current: Math.min(prev.current + 1, prev.questions.length - 1) }),
-        this.flipHandler(),
-      )
-    );
+    this.setState({ answers });
+  };
+
+  restartQuizHandler = () => {
+    const { questions } = this.state;
+    const answers = new Array(questions.length).fill(null);
+    this.setState({ current: 0 }, this.setState({ answers }));
   };
 
   render() {
-    const { current, questions, animate, answers } = this.state;
+    const { current, questions, animate, answers, isFlipped } = this.state;
     const question = questions[current];
 
     const front = animate.interpolate({
@@ -75,32 +69,38 @@ class Quiz extends React.Component {
       outputRange: ['180deg', '360deg'],
     });
 
-    const stats = answers.length ? this.getStatus(answers) : null;
-
-    if (answers.length && !stats.unanswered)
-      return <QuizSummary stats={stats} questions={questions} answers={answers}/>;
+    if (current && current === questions.length)
+      return <QuizSummary questions={questions} answers={answers} onRestart={this.restartQuizHandler} />;
 
     return (
       <View style={styles.container}>
-        <View style={styles.ctrlContainer}>
+        {/* <View style={styles.ctrlContainer}>
+          <Button title="Flip" onPress={this.flipHandler} />
           {stats && <Text>{`correct: ${stats.correct} | incorrect: ${stats.incorrect} | unanswered: ${stats.unanswered}`}</Text>}
           <Button title="<" type="outline" onPress={this.prevQuestionHandler} />
           <Button title=">" type="outline" onPress={this.nextQuestionHandler} />
-        </View>
-        {question && <View style={styles.cardContainer} >
-          <TouchableOpacity onPress={this.flipHandler}>
-            <Animated.View style={[{ transform: [{ rotateY: front }] }, styles.hidden]}>
-              <QuizCard title={`Question #${current + 1}`} content={question.question} />
-            </Animated.View>
-            <Animated.View style={[{ transform: [{ rotateY: back }] }, styles.back, styles.hidden]}>
-              <QuizCard
-                title={`Answer #${current + 1}`}
-                content={question.answer}
-                answer={answers[current]}
-                onAnswered={(correct) => this.answerQuestionHandler(current, correct)}
-              />
-            </Animated.View>
-          </TouchableOpacity>
+        </View> */}
+        {question && <View >
+          {
+            !isFlipped ? (
+              <Animated.View style={[{ transform: [{ rotateY: front }] }, styles.hidden]}>
+                <FrontCard
+                  title={`Question ${current + 1} of ${questions.length}`}
+                  question={question.question}
+                  showAnswer={this.flipHandler} />
+              </Animated.View>
+            ) : (
+                <Animated.View style={[{ transform: [{ rotateY: back }] }, styles.hidden]}>
+                  <BackCard
+                    title={`Answer #${current + 1}`}
+                    content={question}
+                    answer={answers[current]}
+                    onNext={this.nextQuestionHandler}
+                    onAnswered={(correct) => this.answerQuestionHandler(current, correct)}
+                  />
+                </Animated.View>
+              )
+          }
         </View>}
       </View>
     );
@@ -110,13 +110,7 @@ class Quiz extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 10,
-    alignItems: 'center',
-    borderColor: 'blue',
-    borderWidth: 1,
-  },
-  cardContainer: {
-    // alignSelf: 'stretch',
+    backgroundColor: '#f0f1fa',
   },
   ctrlContainer: {
     flexDirection: 'row',
@@ -125,9 +119,6 @@ const styles = StyleSheet.create({
   },
   hidden: {
     backfaceVisibility: 'hidden',
-  },
-  back: {
-    position: 'absolute',
   },
 });
 

@@ -1,27 +1,46 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { View, Text, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, StyleSheet } from 'react-native';
 import { Card, Button } from 'react-native-elements';
 import { AntDesign } from '@expo/vector-icons';
 
 
-export default function QuizCard(props) {
-  const { title, content, onAnswered, answer } = props;
+export function FrontCard(props) {
+  const { question, showAnswer, title } = props;
+
+  return (
+    <Card containerStyle={styles.card}>
+      <ScrollView>
+        <Card.Title>{title}</Card.Title>
+        <Card.Divider />
+        <Text style={styles.text}>{question}</Text>
+        <Button buttonStyle={front.showAnswer} title="Show Answer" onPress={showAnswer} />
+      </ScrollView>
+    </Card>
+  );
+}
+
+export function BackCard(props) {
+  const { answer, content, onAnswered, onNext, title } = props;
 
   const icon = <AntDesign name="check" size={24} />;
 
   return (
-    <Card containerStyle={styles.card}>
-      <Card.Title>{title}</Card.Title>
-      <Card.Divider />
-      <Text style={styles.text}>{content}</Text>
-      {!onAnswered ? null
-        : (
-          <View style={styles.controls}>
+    <View>
+      <Card containerStyle={styles.card}>
+        <ScrollView>
+          <View style={back.title}>
+            <Card.Title style={back.titleText}>{title}</Card.Title>
+            <Button title=">>>" disabled={answer === null} type="clear" onPress={onNext} />
+          </View>
+          <Card.Divider />
+          <Text style={[styles.text, back.question]}>{content.question}?</Text>
+          <Text style={[styles.text, back.answer]}>{content.answer}</Text>
+          <View style={back.controls}>
             <Button
-              style={styles.ctrlBtn}
-              buttonStyle={styles.correct}
-              titleStyle={styles.correctTitle}
+              containerStyle={back.ctrlBtn}
+              buttonStyle={back.correct}
+              titleStyle={back.correctTitle}
               type="outline"
               title="Correct"
               icon={answer ? icon : null}
@@ -29,9 +48,9 @@ export default function QuizCard(props) {
               onPress={() => onAnswered(true)}
             />
             <Button
-              style={styles.ctrlBtn}
-              buttonStyle={styles.incorrect}
-              titleStyle={styles.incorrectTitle}
+              containerStyle={back.ctrlBtn}
+              buttonStyle={back.incorrect}
+              titleStyle={back.incorrectTitle}
               type="outline"
               title="Incorrect"
               icon={answer === false ? icon : null}
@@ -39,48 +58,83 @@ export default function QuizCard(props) {
               onPress={() => onAnswered(false)}
             />
           </View>
-        )
-      }
-    </Card>
+        </ScrollView>
+      </Card >
+    </View>
   );
 }
+
 
 const styles = StyleSheet.create({
   card: {
     borderRadius: 10,
-    width: 360,
   },
   text: {
     textAlign: 'center',
-    fontSize: 30,
+    marginBottom: 10,
   },
-  controls: {
-    height: 80,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'flex-end',
-  },
-  ctrlBtn: {
-    width: 150,
+});
+
+const front = StyleSheet.create({
+  showAnswer: {
+    marginTop: 10,
     borderRadius: 10,
   },
+});
+
+const back = StyleSheet.create({
+  title: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
+  titleText: {
+    marginTop: 10,
+  },
+  question: {
+    fontWeight: 'bold',
+    fontSize: 20,
+  },
+  answer: {
+    fontSize: 15,
+  },
+  controls: {
+    marginTop: 10,
+  },
+  ctrlBtn: {
+    margin: 5,
+  },
   correct: {
+    borderWidth: 1,
     borderColor: 'green',
+    borderRadius: 10,
   },
   correctTitle: {
     color: 'green',
   },
   incorrect: {
+    borderWidth: 1,
     borderColor: 'red',
+    borderRadius: 10,
   },
   incorrectTitle: {
     color: 'red',
   },
 });
 
-QuizCard.propTypes = {
+
+FrontCard.propTypes = {
+  question: PropTypes.string.isRequired,
+  showAnswer: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-  content: PropTypes.string.isRequired,
-  onAnswered: PropTypes.func,
-  answer: PropTypes.bool,
 };
+
+BackCard.propTypes = {
+  answer: PropTypes.bool,
+  content: PropTypes.shape({
+    question: PropTypes.string.isRequired,
+    answer: PropTypes.string.isRequired,
+  }),
+  onAnswered: PropTypes.func.isRequired,
+  onNext: PropTypes.func.isRequired,
+  title: PropTypes.string.isRequired,
+}

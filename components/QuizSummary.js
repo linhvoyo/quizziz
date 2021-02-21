@@ -2,11 +2,16 @@ import React from 'react';
 import { View, Text, Image, FlatList, StyleSheet } from 'react-native';
 import { Button, ListItem } from 'react-native-elements';
 import PropTypes from 'prop-types';
-
 import { AntDesign } from '@expo/vector-icons';
 
 export default function QuizSummary(props) {
-  const { stats, questions, answers } = props;
+  const { questions, answers, onRestart } = props;
+
+  const getStatus = (answrs) => ({
+    correct: answrs.reduce((a, c) => c ? a + 1 : a, 0),
+    incorrect: answrs.reduce((a, c) => c === false ? a + 1 : a, 0),
+    unanswered: answrs.reduce((a, c) => c === null ? a + 1 : a, 0),
+  });
 
   const renderQuestion = ({ item, index }) => (
     <ListItem bottomDivider>
@@ -20,6 +25,7 @@ export default function QuizSummary(props) {
     </ListItem>
   );
 
+  const stats = getStatus(answers);
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
@@ -37,10 +43,11 @@ export default function QuizSummary(props) {
               <Text style={styles.statsText}>{stats.incorrect + stats.correct}</Text>
             </View>
           </View>
-          <Button title="Restart Quiz" />
+          <Button title="Restart Quiz" onPress={onRestart} />
         </View>
       </View>
       <FlatList
+        style={styles.list}
         data={questions}
         keyExtractor={(item, index) => index.toString()}
         renderItem={renderQuestion}
@@ -58,8 +65,7 @@ const styles = StyleSheet.create({
   headerContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
-    borderBottomColor: 'grey',
-    borderBottomWidth: 1,
+    marginRight: 10,
   },
   img: {
     width: 200,
@@ -85,13 +91,14 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     flexDirection: 'row',
   },
+  list: {
+    borderTopColor: 'grey',
+    borderTopWidth: 1,
+  },
 });
 
 QuizSummary.propTypes = {
-  stats: PropTypes.shape({
-    correct: PropTypes.number.isRequired,
-    incorrect: PropTypes.number.isRequired,
-  }),
   questions: PropTypes.array.isRequired,
   answers: PropTypes.array.isRequired,
+  onRestart: PropTypes.func.isRequired,
 };

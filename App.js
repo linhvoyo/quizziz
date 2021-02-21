@@ -52,14 +52,19 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <View style={styles.container}>
-          <Button onPress={printStorage} title="Print store" />
-          <Button onPress={clearStorage} title="Clear Storage" />
+          {/* <Button onPress={printStorage} title="Print store" />
+          <Button onPress={clearStorage} title="Clear Storage" /> */}
           <NavigationContainer>
             <Stack.Navigator>
               <Stack.Screen name="Flashcards" component={NavTabs} options={{ headerTitleAlign: 'center' }} />
-              <Stack.Screen name="Deck" component={Deck} options={({ route }) => ({ title: route.params.title })} />
+              <Stack.Screen name="Deck" component={Deck} />
               <Stack.Screen name="AddCard" component={AddCard} />
-              <Stack.Screen name="Quiz" component={Quiz} />
+              <Stack.Screen name="Quiz" component={Quiz} options={{
+                headerTitle: '',
+                headerTitleAlign: 'center',
+                headerBackTitleVisible: true,
+                headerBackTitle: 'Back To Deck',
+              }} />
             </Stack.Navigator>
           </NavigationContainer>
         </View>
@@ -71,8 +76,6 @@ class App extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    borderColor: 'blue',
-    borderWidth: 1,
     paddingTop: 30,
     justifyContent: 'flex-start',
   },
