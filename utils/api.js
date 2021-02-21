@@ -63,12 +63,3 @@ export async function removeDeckFromStorage(name) {
   delete decks[name];
   await setDecksItem(decks);
 }
-
-export async function updateDecks(decks) {
-  await AsyncStorage.mergeItem(DECKS_STORAGE_KEY, JSON.stringify(decks));
-}
-
-export async function updateQuizzes(quizzes) {
-  if (!JSON.parse(await getQuizzesFromStorage())) await AsyncStorage.setItem(QUIZZES_STORAGE_KEY, JSON.stringify({}));
-  await AsyncStorage.mergeItem(QUIZZES_STORAGE_KEY, JSON.stringify(quizzes));
-}

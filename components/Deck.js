@@ -9,13 +9,11 @@ import { addQuizToDeck, addQuizToQuizes } from '../store/actions';
 
 
 class Deck extends React.Component {
-  startQuizHandler = async () => {
-    const { onCreateQuiz, onAddQuizToQuizes, questions, params: { title }, navigation } = this.props;
-    onCreateQuiz(title).then((quizId) => {
-      onAddQuizToQuizes(quizId, title, questions).then((quiz) => {
-        navigation.navigate('Quiz', { ...quiz });
-      });
-    });
+  startQuizHandler = () => {
+    const { navigation, params } = this.props;
+    const answers = new Array(params.questions.length).fill(null);
+    navigation.navigate('Quiz', { ...params, answers });
+
   };
 
   render() {
@@ -27,8 +25,16 @@ class Deck extends React.Component {
         </View>
         <Text style={styles.title}>{params.title}</Text>
         <Text style={styles.cardCount}>{`${questions.length} cards`}</Text>
-        <Button containerStyle={styles.button} title="Add Card" type="outline" onPress={() => navigation.navigate('AddCard', { ...params })} />
-        <Button containerStyle={styles.button} title="Start Quiz" disabled={!questions.length} onPress={this.startQuizHandler} />
+        <Button
+          containerStyle={styles.button}
+          title="Add Card"
+          type="outline"
+          onPress={() => navigation.navigate('AddCard', { ...params })} />
+        <Button
+          containerStyle={styles.button}
+          title="Start Quiz"
+          disabled={!questions.length}
+          onPress={this.startQuizHandler} />
       </View>
     );
   }
