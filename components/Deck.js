@@ -10,10 +10,9 @@ import { addQuizToDeck, addQuizToQuizes } from '../store/actions';
 
 class Deck extends React.Component {
   startQuizHandler = () => {
-    const { navigation, params } = this.props;
+    const { navigation, params, questions } = this.props;
     const answers = new Array(params.questions.length).fill(null);
-    navigation.navigate('Quiz', { ...params, answers });
-
+    navigation.navigate('Quiz', { title: params.title, questions, answers });
   };
 
   render() {
@@ -71,7 +70,6 @@ const styles = {
     margin: 5,
   },
 };
-
 
 const mapStateToProps = ({ decks }, props) => {
   const { navigation, route: { params } } = props;

@@ -98,7 +98,6 @@ const mapDispatchToProps = (dispatch) => {
 
 DeckList.propTypes = {
   decks: PropTypes.array.isRequired,
-  dispatch: PropTypes.func.isRequired,
   navigation: PropTypes.object.isRequired,
   getDecks: PropTypes.func.isRequired,
   removeDeck: PropTypes.func.isRequired,

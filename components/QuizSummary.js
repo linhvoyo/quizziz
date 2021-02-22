@@ -1,8 +1,10 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { View, Text, Image, FlatList, StyleSheet } from 'react-native';
 import { Button, ListItem } from 'react-native-elements';
 import PropTypes from 'prop-types';
 import { AntDesign } from '@expo/vector-icons';
+
+import { clearScheduledNotifications, scheduleNotificationAsync } from '../utils/helpers';
 
 export default function QuizSummary(props) {
   const { questions, answers, onRestart } = props;
@@ -26,6 +28,16 @@ export default function QuizSummary(props) {
   );
 
   const stats = getStatus(answers);
+
+  useEffect(() => {
+    const TimeNotificatonTrigger = {
+      seconds: 60 * 60 * 24,
+      repeats: true,
+    };
+    clearScheduledNotifications()
+      .then(async () => scheduleNotificationAsync(TimeNotificatonTrigger));
+  });
+
   return (
     <View style={styles.container}>
       <View style={styles.headerContainer}>
