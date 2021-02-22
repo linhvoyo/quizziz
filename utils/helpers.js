@@ -1,4 +1,5 @@
 import * as Notifications from 'expo-notifications';
+import { Alert } from 'react-native';
 
 import { setNotificationItem, getNotificationsFromStorage, removeNotificationKey } from './api';
 export async function requestPermissionsAsync() {
@@ -6,7 +7,7 @@ export async function requestPermissionsAsync() {
   if (permissions.status === 'granted') return permissions;
   return Notifications.requestPermissionsAsync()
     .then(response => {
-      if (response.status !== 'granted') alert('Please enable notifications to get daily reminder');
+      if (response.status !== 'granted') Alert('Please enable notifications in settings to get daily reminder');
       return permissions;
     });
 }

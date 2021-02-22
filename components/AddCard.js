@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { View, TextInput, StyleSheet } from 'react-native';
+import { View, TextInput, StyleSheet, Alert } from 'react-native';
 import { Button } from 'react-native-elements';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
@@ -20,6 +20,7 @@ function AddCard(props) {
 
   async function addCardHandler(deck, question, answer) {
     const { dispatch, navigation, route } = props;
+    if (!question && !answer) return Alert.alert('Unable to create card, Fields are empty');
     await dispatch(createCard(deck, question, answer));
     navigation.navigate('Deck', { ...route.params });
   }

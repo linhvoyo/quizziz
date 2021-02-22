@@ -16,7 +16,7 @@ export default function AddDeck(props) {
   };
 
   const isError = (value) => {
-    if (!value) return 'String is empty';
+    if (!value) return 'Name can not be blank';
     if (getDecks().includes(value)) return 'Name already exists';
     return false;
   };
@@ -40,7 +40,7 @@ export default function AddDeck(props) {
         value={textInput}
         blurOnSubmit={true}
       />
-      <Button title="Create deck" onPress={createDeckHandler} />
+      <Button title="Create Deck" onPress={createDeckHandler} />
     </View>
   );
 }
