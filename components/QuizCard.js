@@ -137,4 +137,4 @@ BackCard.propTypes = {
   onAnswered: PropTypes.func.isRequired,
   onNext: PropTypes.func.isRequired,
   title: PropTypes.string.isRequired,
-}
+};

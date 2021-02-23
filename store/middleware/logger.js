@@ -1,4 +1,3 @@
-/* eslint-disable no-console */
 export default function logger(store) {
   return (next) => (action) => {
     console.group(action.type);

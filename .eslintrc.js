@@ -4,5 +4,6 @@ module.exports = {
   rules: {
     'prettier/prettier': 'off',
     'react/prop-types': 1,
+    'curly': 'off',
   },
 };

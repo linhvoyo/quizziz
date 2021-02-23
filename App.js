@@ -4,7 +4,7 @@ import { createStore, compose } from 'redux';
 import { Provider } from 'react-redux';
 import * as Notifications from 'expo-notifications';
 
-import reducer from './store/reducers';
+import reducer from './store/reducer';
 import middleware from './store/middleware';
 
 import { printStorage, clearStorage } from './utils/api';
@@ -58,11 +58,11 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <View style={styles.container}>
-          <Button onPress={printStorage} title="Print store" />
+          {/* <Button onPress={printStorage} title="Print store" />
           <Button onPress={clearStorage} title="Clear Storage" />
           <Button title="push notification" onPress={this.test} />
           <Button title="all notifictions" onPress={async () => console.log(await Notifications.getAllScheduledNotificationsAsync())} />
-          <Button title="clear notifications" onPress={async () => Notifications.cancelAllScheduledNotificationsAsync()} />
+          <Button title="clear notifications" onPress={async () => Notifications.cancelAllScheduledNotificationsAsync()} /> */}
           <NavigationContainer>
             <Stack.Navigator>
               <Stack.Screen name="Flashcards" component={NavTabs} options={{ headerTitleAlign: 'center' }} />

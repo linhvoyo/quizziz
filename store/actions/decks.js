@@ -4,7 +4,13 @@ import {
   ADD_CARD,
   REMOVE_DECK,
 } from './actionTypes';
-import { getDecksFromStorage, addDeckToStorgage, addQuestion, removeDeckFromStorage } from '../../utils/api';
+
+import {
+  addDeckToStorgage,
+  addQuestion,
+  getDecksFromStorage,
+  removeDeckFromStorage,
+} from '../../utils/api';
 
 const addDeck = (deck) => ({
   type: ADD_DECK,

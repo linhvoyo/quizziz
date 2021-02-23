@@ -11,8 +11,8 @@ export default function AddDeck(props) {
   const textInputHandler = (value) => { setTextInput(value); };
 
   const getDecks = () => {
-    const { decks } = props.store.getState();
-    return Object.keys(decks);
+    const state = props.store.getState();
+    return Object.keys(state);
   };
 
   const isError = (value) => {

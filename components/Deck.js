@@ -71,9 +71,9 @@ const styles = {
   },
 };
 
-const mapStateToProps = ({ decks }, props) => {
+const mapStateToProps = (state, props) => {
   const { navigation, route: { params } } = props;
-  const { questions } = decks[params.title];
+  const { questions } = state[params.title];
   return {
     navigation,
     params,
