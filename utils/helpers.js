@@ -1,7 +1,12 @@
 import * as Notifications from 'expo-notifications';
 import { Alert } from 'react-native';
 
-import { setNotificationItem, getNotificationsFromStorage, removeNotificationKey } from './api';
+import {
+  getNotificationsFromStorage,
+  removeNotificationKey,
+  setNotificationItem,
+} from './api';
+
 export async function requestPermissionsAsync() {
   const permissions = await Notifications.getPermissionsAsync();
   if (permissions.status === 'granted') return permissions;
@@ -44,14 +49,10 @@ export async function scheduleNotificationAsync(notificationTrigger) {
     .then(async (notifications) => {
       const [scheduled] = notifications;
       const scheduledTime = await getNotificationsFromStorage();
-      const isNextDay = scheduledTime && new Date().valueOf() >= (Date.parse(JSON.parse(scheduledTime)) + (60 * 24 * 24 * 1000));
-      console.log('scheduled', scheduled);
-      console.log(scheduled && scheduled.trigger.type === 'timeInterval');
-      console.log(scheduledTime);
-      console.log('nextDay', isNextDay);
+      const isNextDay = scheduledTime
+        && new Date().valueOf() >= (Date.parse(JSON.parse(scheduledTime)) + (60 * 24 * 24 * 1000));
       if (!notifications.length ||
         ((scheduled && scheduled.trigger.type === 'timeInterval') && isNextDay)) {
-        console.log('set notification');
         const { status } = await requestPermissionsAsync();
         if (status === 'granted') {
           await Notifications.cancelAllScheduledNotificationsAsync();

@@ -37,7 +37,11 @@ function AddCard(props) {
         placeholder="Answer"
         value={state.answer}
         onChangeText={answerInputHandler} />
-      <Button containerStyle={styles.button} title="Add Card" onPress={async () => addCardHandler(title, state.question, state.answer)} />
+      <Button
+        containerStyle={styles.button}
+        title="Add Card"
+        onPress={async () => addCardHandler(title, state.question, state.answer)}
+      />
     </View>
   );
 }
