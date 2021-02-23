@@ -1,13 +1,10 @@
 import React from 'react';
-import { View, Button, StyleSheet, Platform } from 'react-native';
+import { View, StyleSheet, Platform } from 'react-native';
 import { createStore, compose } from 'redux';
 import { Provider } from 'react-redux';
-import * as Notifications from 'expo-notifications';
 
 import reducer from './store/reducer';
 import middleware from './store/middleware';
-
-import { printStorage, clearStorage } from './utils/api';
 import { scheduleNotificationAsync } from './utils/helpers';
 
 import { NavigationContainer } from '@react-navigation/native';
@@ -58,11 +55,6 @@ class App extends React.Component {
     return (
       <Provider store={store}>
         <View style={styles.container}>
-          {/* <Button onPress={printStorage} title="Print store" />
-          <Button onPress={clearStorage} title="Clear Storage" />
-          <Button title="push notification" onPress={this.test} />
-          <Button title="all notifictions" onPress={async () => console.log(await Notifications.getAllScheduledNotificationsAsync())} />
-          <Button title="clear notifications" onPress={async () => Notifications.cancelAllScheduledNotificationsAsync()} /> */}
           <NavigationContainer>
             <Stack.Navigator>
               <Stack.Screen name="Flashcards" component={NavTabs} options={{ headerTitleAlign: 'center' }} />
