@@ -15,6 +15,8 @@
 
 Quizziz is a mobile application for Android and iOS created using react native. This app allows users to create, categorize, and study flashcards.
 
+Project has been tested for both iOS and Android.
+
 ## Project Specification
 
 ```
