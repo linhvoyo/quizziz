@@ -11,23 +11,22 @@ export default function AddDeck(props) {
   const textInputHandler = (value) => { setTextInput(value); };
 
   const getDecks = () => {
-    const state = props.store.getState();
-    return Object.keys(state);
+    return props.store.getState();
   };
 
   const isError = (value) => {
     if (!value) return 'Name can not be blank';
-    if (getDecks().includes(value)) return 'Name already exists';
+    if (Object.keys(getDecks()).includes(value)) return 'Name already exists';
     return false;
   };
 
-  const createDeckHandler = () => {
+  const createDeckHandler = async () => {
     const { store, navigation } = props;
     const error = isError(textInput);
     if (error) return Alert.alert('Unable to create deck', error);
-    store.dispatch(createDeck(textInput));
+    const deck = (await store.dispatch(createDeck(textInput)))[textInput];
     setTextInput('');
-    navigation.navigate('Flashcards');
+    navigation.navigate('Deck', deck);
   };
 
   return (

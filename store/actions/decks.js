@@ -43,7 +43,11 @@ export const fetchDecks = () => {
 
 export const createDeck = (name) => {
   return async dispatch => {
-    return addDeckToStorgage(name).then((deck) => dispatch(addDeck(deck)));
+    return addDeckToStorgage(name)
+      .then((deck) => {
+        dispatch(addDeck(deck));
+        return deck;
+      });
   };
 };
 

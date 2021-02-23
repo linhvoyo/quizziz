@@ -29,7 +29,7 @@ class DeckList extends React.Component {
         <View style={styles.container}>
           <FlatList
             data={decks}
-            renderItem={(item) => <DeckCard item={item} onDeckClick={this.navigateToDeckHandler} remove={removeDeck}/>}
+            renderItem={(item) => <DeckCard item={item} onDeckClick={this.navigateToDeckHandler} remove={removeDeck} />}
             keyExtractor={item => item.title}
           />
         </View>
